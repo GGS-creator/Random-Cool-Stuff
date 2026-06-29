@@ -1,0 +1,122 @@
+Stuff i learnt today
+
+Json
+javascript object notation.
+Format used to send data from backend to the frontend.
+Features-easy,lightweight compared to XML,compact,adaptablity.
+
+Syntax:- Data in key value pairs.
+{
+	"name":"tom",
+	"age":22,
+	"married":True,
+},
+
+Values in the curly brackets=objects
+JSON array=array of data
+Serialization=converting Pythong live object and packing them to send them through the internet
+Deserilization=unpacking them.
+
+	Fast API
+pip install fastapi
+pip install uvicorn (to test the app)
+
+create main.py
+ import fast api
+ @app.ger("/") //when someone calls this link the function below runs.
+ 
+ uvicorn main:app --reload (to test the app)
+ 
+ uvicorn main:app --host 0.0.0.0 --port 8000
+ 
+ curl -X POST -H "Content-Type: application/json" 'http://ip:port/items?item=orange' (to add something to a var in a website)
+ 
+ import Http exception to show specific error messages
+ 
+ pydantic used for validating data sent by the use,as some shit needs to have specific data when sending
+ 
+ curl -X POST -H "Content-Type: application/json" -d '{"text:"apple"}' 'http://ip:port/items' (when using pydantic user can send data in json format as item is used in the code.)
+ 
+ There is a way to test using gui, look out how to do that. 
+ 
+ Code-
+from fastapi import FastAPI, HTTPException #fast api and http error showing shit
+from pydantic import BaseModel #mostly used to send and recieve json
+
+app = FastAPI()
+
+
+class Item(BaseModel): #pydantic shit
+    text: str = None
+    is_done: bool = False
+
+
+items = [] #main place to store data
+
+
+@app.get("/") #main website link
+def root():
+    return {"Hello": "World"}
+
+
+@app.post("/items") #if i click on items this runs and send this
+def create_item(item: Item):
+    items.append(item)
+    return items
+
+
+@app.get("/items", response_model=list[Item]) #send back to user
+def list_items(limit: int = 10):
+    return items[0:limit]
+
+
+@app.get("/items/{item_id}", response_model=Item)
+def get_item(item_id: int) -> Item:
+    if item_id < len(items):
+        return items[item_id]
+    else:
+        raise HTTPException(status_code=404, detail=f"Item {item_id} not found")
+        
+fuser -k 8000/tcp to kill current process on that port
+        
+	Cors
+Cross origin resource sharing 
+CORS or "Cross-Origin Resource Sharing" refers to the situations when a frontend running in a browser has JavaScript code that communicates with a backend, and the backend is in a different "origin" than the frontend.
+
+from fastapi.middleware.cors import CORSMiddleware # 1. Import CORS
+# 2. Add this Middleware block (CRITICAL)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], allows all
+    allow_credentials=True, Indicate that cookies should be supported for cross-origin requests.
+    allow_methods=["*"], - A regex string to match against origins that should be permitted to make cross-origin requests. e.g. 'https://.*\.example\.org'.
+    allow_headers=["*"],  - A list of HTTP methods that should be allowed for cross-origin requests. Defaults to ['GET']. You can use ['*'] to allow all standard methods.
+)
+ 
+pip freeze > requirements.txt to get requirements.txt
+change icon in android > app > src > main
+
+
+fastapi=library used to connect backend to the frontend.Header is the header of the packet sent
+from fastapi import FastAPI,HTTPException, Header, Request
+
+Pydantic does the data validation.
+from pydantic import BaseModel
+
+os library helps traverse through the dir
+
+middleware allows one website to talk to another.
+
+slowapi used for rate limiting.
+
+
+	Library from dart
+async-for asynchronus task like future,stream and timer.
+
+material.dart-for default stuff like scaffold,appbar etc
+
+services.dart-used for interaction with the OS.
+
+convert-decode data and display json->text
+
+http.dart- sends request to the backend.

